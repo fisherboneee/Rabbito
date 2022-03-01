@@ -43,6 +43,12 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
     console.log('Rabbito is ready for action!');
+
+    // Setting up bot Rich Presence!
+    client.user.setPresence({
+        activities: [{ name: 'songs for you!', type: 'PLAYING' }],
+        status: 'online',
+    });
 });
 
 client.on('interactionCreate', async (interaction) => {
