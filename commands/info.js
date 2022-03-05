@@ -13,7 +13,7 @@ module.exports = {
 
         if (!queue)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         /* Create progress bar for the song, specify queue false so that it will only display current playing song

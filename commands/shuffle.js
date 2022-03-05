@@ -22,7 +22,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new MessageEmbed().setDescription(
-                    `Your queue of ${queue.tracks.length} songs has been shuffled`
+                    `Your queue of ${queue.tracks.length} songs has been shuffled.`
                 ),
             ],
         });

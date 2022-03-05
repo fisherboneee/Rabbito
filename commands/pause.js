@@ -13,7 +13,7 @@ module.exports = {
 
         if (!queue)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         // Set the queue/music to pause
@@ -22,7 +22,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new MessageEmbed().setDescription(
-                    'Music has been paused, use `/resume` to resume the music'
+                    'Music has been paused, use `/resume` to resume the music.'
                 ),
             ],
         });

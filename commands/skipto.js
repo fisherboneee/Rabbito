@@ -20,7 +20,7 @@ module.exports = {
 
         if (!queue)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         const trackNum = interaction.options.getNumber('tracknumber');
@@ -33,7 +33,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new MessageEmbed().setDescription(
-                    `Skipped ahead to track number ${trackNum}`
+                    `Skipped ahead to track number ${trackNum}.`
                 ),
             ],
         });

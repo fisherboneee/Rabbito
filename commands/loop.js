@@ -34,7 +34,7 @@ module.exports = {
 
         if (!queue || !queue.playing)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         // Return the value of addChoices()
@@ -46,13 +46,13 @@ module.exports = {
         // Set the loopMode based on the input given
         if (input === QueueRepeatMode.OFF.toString()) {
             queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **OFF**');
+            embed.setDescription('Loop has been set to **OFF**.');
         } else if (input === QueueRepeatMode.TRACK.toString()) {
             queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **SONG**');
+            embed.setDescription('Loop has been set to **SONG**.');
         } else if (input === QueueRepeatMode.QUEUE.toString()) {
             queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **QUEUE**');
+            embed.setDescription('Loop has been set to **QUEUE**.');
         }
 
         await interaction.editReply({

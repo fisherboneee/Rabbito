@@ -15,7 +15,7 @@ module.exports = {
 
         if (!queue)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         // To destroy the queue and exit the voice channel simultaneously
@@ -24,7 +24,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new MessageEmbed().setDescription(
-                    '**Disconnected from the voice channel**'
+                    '**Disconnected from the voice channel.**'
                 ),
             ],
         });

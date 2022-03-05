@@ -52,12 +52,18 @@ module.exports = {
         // Validating if user is in the voice channel
         if (!interaction.member.voice.channel)
             return interaction.editReply(
-                'You need to be in a voice channel to use this command'
+                'You need to be in a voice channel to use this command.'
             );
 
-        const queue = await client.player.createQueue(interaction.guild);
+        const queue = await client.player.createQueue(interaction.guild, {
+            initialVolume: 40,
+            leaveOnEnd: false,
+            volumeSmoothness: false,
+        });
+
         if (!queue.connection)
             await queue.connect(interaction.member.voice.channel);
+
         // Declaration of embed message
         let embed = new MessageEmbed();
         // Getting the subcommand
@@ -78,10 +84,11 @@ module.exports = {
             const song = result.tracks[0];
             // then add the song to the queue
             await queue.addTrack(song);
+
             embed
                 // You can easily set the song title and url based on the variable you declared above
                 .setDescription(
-                    `**[${song.title}](${song.url})** has been added to the queue`
+                    `**[${song.title}](${song.url})** has been added to the queue.`
                 )
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(song.thumbnail)
@@ -103,10 +110,11 @@ module.exports = {
             const playlist = result.playlist;
             // then add the song to the queue (noticed it uses addTrack(s) instead of addTrack)
             await queue.addTracks(result.tracks);
+
             embed
                 // You can easily set the playlist title and url based on the variable you declared above
                 .setDescription(
-                    `**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** has been added to the queue`
+                    `**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** has been added to the queue.`
                 )
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(playlist.thumbnail);
@@ -127,10 +135,11 @@ module.exports = {
             const song = result.tracks[0];
             // then add the song to the queue
             await queue.addTrack(song);
+
             embed
                 // You can easily set the song title and url based on the variable you declared above
                 .setDescription(
-                    `**[${song.title}](${song.url})** has been added to the queue`
+                    `**[${song.title}](${song.url})** has been added to the queue.`
                 )
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(song.thumbnail)

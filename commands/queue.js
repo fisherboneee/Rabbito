@@ -20,7 +20,7 @@ module.exports = {
 
         if (!queue || !queue.playing)
             return await interaction.editReply(
-                'There are no songs in the queue'
+                'There are no songs in the queue.'
             );
 
         // Math.ceil is round down method (11 tracks = 2 pages) or 1 page at max.
@@ -32,7 +32,7 @@ module.exports = {
         // Verify the page given by user
         if (page > totalPages)
             return await interaction.editReply(
-                `Invalid page. There are only a total of ${totalPages} pages of songs`
+                `Invalid page. There are only a total of ${totalPages} pages of songs.`
             );
 
         /* Returned array to get the queue string where it will be displayed
@@ -60,11 +60,11 @@ module.exports = {
             embeds: [
                 new MessageEmbed()
                     .setDescription(
-                        `**Currently Playing**\n` +
+                        `**Currently Playing:**\n` +
                             (currentSong
                                 ? `\`[${currentSong.duration}]\` ${currentSong.title} -- <@${currentSong.requestedBy.id}>`
                                 : 'None') +
-                            `\n\n**Queue**\n${queueString}`
+                            `\n\n**Queue:**\n${queueString}`
                     )
                     .setFooter({
                         text: `Page ${page + 1} of ${totalPages}`,
