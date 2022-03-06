@@ -42,7 +42,8 @@ module.exports = {
                         {
                             name: 'Skip to the track number in the queue',
                             value: '/skipto',
-                        }
+                        },
+                        { name: 'Clear the queue', value: '/clear' }
                     )
                     .setFooter({ text: 'Thank you Rabbito!' }),
             ],

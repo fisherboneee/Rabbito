@@ -56,7 +56,7 @@ module.exports = {
             );
 
         const queue = await client.player.createQueue(interaction.guild, {
-            initialVolume: 40,
+            initialVolume: 30,
             leaveOnEnd: false,
             volumeSmoothness: false,
         });
