@@ -11,7 +11,7 @@ module.exports = {
         await interaction.editReply({
             embeds: [
                 new MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#EFAAC4')
                     .setAuthor({
                         name: 'Rabbito',
                         iconURL: 'https://i.imgur.com/ACiGc2A.png',
@@ -43,7 +43,11 @@ module.exports = {
                             name: 'Skip to the track number in the queue',
                             value: '/skipto',
                         },
-                        { name: 'Clear the queue', value: '/clear' }
+                        { name: 'Clear the queue', value: '/clear' },
+                        {
+                            name: 'Disconnect bot from voice channel',
+                            value: '/leave',
+                        }
                     )
                     .setFooter({ text: 'Thank you Rabbito!' }),
             ],

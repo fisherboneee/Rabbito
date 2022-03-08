@@ -12,18 +12,32 @@ module.exports = {
         const queue = client.player.getQueue(interaction.guildId);
 
         if (!queue)
-            return await interaction.editReply(
-                'There are no songs in the queue.'
-            );
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — There are no songs in the queue.'
+                        ),
+                ],
+            });
 
         // To clear the queue
         queue.clear();
 
         await interaction.editReply({
             embeds: [
-                new MessageEmbed().setDescription(
-                    '**Queue has been cleared!**'
-                ),
+                new MessageEmbed()
+                    .setColor('#EFAAC4')
+                    .setAuthor({
+                        name: 'Success!',
+                        iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                    })
+                    .setTitle(':white_check_mark: — Queue has been cleared!'),
             ],
         });
     },
