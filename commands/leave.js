@@ -13,19 +13,36 @@ module.exports = {
         // Get queue from current guild (server)
         const queue = client.player.getQueue(interaction.guildId);
 
+        // If Rabbito is not connected to the voice channel
         if (!queue)
-            return await interaction.editReply(
-                'There are no songs in the queue.'
-            );
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — Rabbito is not connected to any voice channel.'
+                        ),
+                ],
+            });
 
         // To destroy the queue and exit the voice channel simultaneously
         queue.destroy();
 
         await interaction.editReply({
             embeds: [
-                new MessageEmbed().setDescription(
-                    '**Disconnected from the voice channel.**'
-                ),
+                new MessageEmbed()
+                    .setColor('#EFAAC4')
+                    .setAuthor({
+                        name: 'Success!',
+                        iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                    })
+                    .setTitle(
+                        ':white_check_mark: — Disconnected from voice channel.'
+                    ),
             ],
         });
     },

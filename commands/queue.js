@@ -18,10 +18,20 @@ module.exports = {
         // Get queue from current guild (server)
         const queue = client.player.getQueue(interaction.guildId);
 
-        if (!queue || !queue.playing)
-            return await interaction.editReply(
-                'There are no songs in the queue.'
-            );
+        if (!queue)
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — There are no songs in the queue.'
+                        ),
+                ],
+            });
 
         // Math.ceil is round down method (11 tracks = 2 pages) or 1 page at max.
         const totalPages = Math.ceil(queue.tracks.length / 10) || 1;
@@ -30,10 +40,20 @@ module.exports = {
         const page = (interaction.options.getNumber('page') || 1) - 1;
 
         // Verify the page given by user
-        if (page > totalPages)
-            return await interaction.editReply(
-                `Invalid page. There are only a total of ${totalPages} pages of songs.`
-            );
+        if (page >= totalPages)
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            `:warning: — Invalid page. There are only a total of ${totalPages} pages of songs.`
+                        ),
+                ],
+            });
 
         /* Returned array to get the queue string where it will be displayed
         Use slice function to slice down the track to one page (that's why page * 10)
@@ -44,32 +64,56 @@ module.exports = {
             .slice(page * 10, page * 10 + 10)
             .map((song, i) => {
                 /* Use this formula to check whether what song number should be displayed on the page
-                For example, if it's given page is 0, following that formula we will display song #1 on page 1 (index 0)
-                Backslash backtick (\` content \`) to display in a codeblock format (discord) */
-                return `**${page * 10 + i + 1}.** \`[${song.duration}]\` ${
-                    song.title
-                } -- <@${song.requestedBy.id}>`;
+                For example, if it's given page is 0, following that formula we will display song #1 on page 1 (index 0) */
+                return `**${page * 10 + i + 1}.** ${song.title} - ${
+                    song.duration
+                } by <@${song.requestedBy.id}>`;
             })
-            .join('\n');
+            .join('\n\n');
 
         // Return current song in the queue
         const currentSong = queue.current;
+
+        // Return playing state
+        const isPlaying = queue.playing;
 
         // and reply to the channel the embeds that has been created
         await interaction.editReply({
             embeds: [
                 new MessageEmbed()
-                    .setDescription(
-                        `**Currently Playing:**\n` +
-                            (currentSong
-                                ? `\`[${currentSong.duration}]\` ${currentSong.title} -- <@${currentSong.requestedBy.id}>`
-                                : 'None') +
-                            `\n\n**Queue:**\n${queueString}`
+                    .setColor('#EFAAC4')
+                    .setAuthor({
+                        name: 'Rabbito',
+                        iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                    })
+                    .addFields(
+                        {
+                            name: ':arrow_forward: — Now Playing\n\u200b',
+                            // Ternary Operator for currentSong variable
+                            // Check if currentSong is null
+                            // If null, default to 'None'
+                            value: !(currentSong && isPlaying)
+                                ? 'There are no song(s) playing right now.\n\u200b'
+                                : `**[${currentSong.title}](${currentSong.url}) - ${currentSong.duration}** by <@${currentSong.requestedBy.id}>\n\u200b`,
+                        },
+                        {
+                            name: ':musical_note: — In Queue\n\u200b',
+                            // Ternary Operator for queueString variable
+                            // Check if queueString is null
+                            // If null, default to 'None'
+                            value: queueString
+                                ? queueString
+                                : 'There are no songs in the queue.\n\u200b',
+                        }
                     )
                     .setFooter({
                         text: `Page ${page + 1} of ${totalPages}`,
                     })
-                    .setThumbnail(currentSong.thumbnail),
+                    .setThumbnail(
+                        !(currentSong && isPlaying)
+                            ? 'https://i.imgur.com/ACiGc2A.png'
+                            : currentSong.thumbnail
+                    ),
             ],
         });
     },

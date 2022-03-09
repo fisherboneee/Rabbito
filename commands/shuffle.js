@@ -11,19 +11,36 @@ module.exports = {
         // Get queue from current guild (server)
         const queue = client.player.getQueue(interaction.guildId);
 
-        if (!queue)
-            return await interaction.editReply(
-                'There are no songs in the queue'
-            );
+        if (!queue || queue.tracks.length < 2) {
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — There need to be at least 2 songs in the queue to shuffle.'
+                        ),
+                ],
+            });
+        }
 
         // To shuffle the queue
         queue.shuffle();
 
         await interaction.editReply({
             embeds: [
-                new MessageEmbed().setDescription(
-                    `Your queue of ${queue.tracks.length} songs has been shuffled.`
-                ),
+                new MessageEmbed()
+                    .setColor('#EFAAC4')
+                    .setAuthor({
+                        name: 'Success!',
+                        iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                    })
+                    .setTitle(
+                        `:twisted_rightwards_arrows: — Your queue of ${queue.tracks.length} songs has been shuffled.`
+                    ),
             ],
         });
     },

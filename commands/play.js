@@ -51,9 +51,19 @@ module.exports = {
     run: async ({ client, interaction }) => {
         // Validating if user is in the voice channel
         if (!interaction.member.voice.channel)
-            return interaction.editReply(
-                'You need to be in a voice channel to use this command.'
-            );
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — You need to be in a voice channel to use Rabbito.'
+                        ),
+                ],
+            });
 
         const queue = await client.player.createQueue(interaction.guild, {
             initialVolume: 30,
@@ -86,10 +96,14 @@ module.exports = {
             await queue.addTrack(song);
 
             embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':arrow_forward: — Added to the queue')
                 // You can easily set the song title and url based on the variable you declared above
-                .setDescription(
-                    `**[${song.title}](${song.url})** has been added to the queue.`
-                )
+                .setDescription(`**[${song.title}](${song.url})**`)
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration}` });
@@ -112,12 +126,19 @@ module.exports = {
             await queue.addTracks(result.tracks);
 
             embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':arrow_forward: — Added to the queue')
                 // You can easily set the playlist title and url based on the variable you declared above
                 .setDescription(
-                    `**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** has been added to the queue.`
+                    `**${result.tracks.length} songs from [${playlist.title}](${playlist.url})**`
                 )
                 // You can also set the thumbnail based on the variable too!
-                .setThumbnail(playlist.thumbnail);
+                .setThumbnail(playlist.thumbnail)
+                .setFooter({ text: `Duration: ${playlist.duration}` });
         } else if (interaction.options.getSubcommand() === 'search') {
             // Grab the addStringOption name/string
             let url = interaction.options.getString('keywords');
@@ -137,10 +158,14 @@ module.exports = {
             await queue.addTrack(song);
 
             embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':arrow_forward: — Added to the queue')
                 // You can easily set the song title and url based on the variable you declared above
-                .setDescription(
-                    `**[${song.title}](${song.url})** has been added to the queue.`
-                )
+                .setDescription(`**[${song.title}](${song.url})**`)
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(song.thumbnail)
                 .setFooter({ text: `Duration: ${song.duration}` });

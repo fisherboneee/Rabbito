@@ -21,8 +21,8 @@ module.exports = {
                 Both name and value need to be string */
                 .addChoices([
                     ['off', QueueRepeatMode.OFF.toString()],
-                    ['song', QueueRepeatMode.TRACK.toString()],
                     ['queue', QueueRepeatMode.QUEUE.toString()],
+                    ['song', QueueRepeatMode.TRACK.toString()],
                 ])
                 .setRequired(true)
         ),
@@ -32,7 +32,7 @@ module.exports = {
         // Declaration of embed message
         let embed = new MessageEmbed();
 
-        if (!queue || !queue.playing)
+        if (!queue)
             return await interaction.editReply(
                 'There are no songs in the queue.'
             );
@@ -46,13 +46,31 @@ module.exports = {
         // Set the loopMode based on the input given
         if (input === QueueRepeatMode.OFF.toString()) {
             queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **OFF**.');
-        } else if (input === QueueRepeatMode.TRACK.toString()) {
-            queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **SONG**.');
+            embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':no_entry_sign: — Loop has been set to OFF.');
         } else if (input === QueueRepeatMode.QUEUE.toString()) {
             queue.setRepeatMode(loopMode);
-            embed.setDescription('Loop has been set to **QUEUE**.');
+            embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':repeat: — Loop has been set to QUEUE.');
+        } else if (input === QueueRepeatMode.TRACK.toString()) {
+            queue.setRepeatMode(loopMode);
+            embed
+                .setColor('#EFAAC4')
+                .setAuthor({
+                    name: 'Success!',
+                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                })
+                .setTitle(':repeat_one: — Loop has been set to SONG.');
         }
 
         await interaction.editReply({
