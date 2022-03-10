@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, token } = require('./config.json');
+const { clientId, token } = require('./config.json');
 
 const commands = [];
 // Use fs to read directory of slash commands and filter it with *.js
@@ -20,8 +20,8 @@ for (const file of commandFiles) {
 // Using REST to deploy slash commands and give it token
 const rest = new REST({ version: '9' }).setToken(token);
 
-/* Using REST and put the arg as Routes which generate URL with clientId and also guildId
+/* Using REST and put the arg as Routes which generate URL with clientId
 then deploy the body with commands array */
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+rest.put(Routes.applicationCommands(clientId), { body: commands })
     .then(() => console.log('Successfully registered application commands'))
     .catch(console.error);

@@ -49,6 +49,16 @@ client.once('ready', () => {
         activities: [{ name: 'songs for s̶e̶u̶ you!', type: 'PLAYING' }],
         status: 'online',
     });
+
+    /* To be used for removing guild commands
+    as it might duplicate with global commands
+    use only when needed! (don't forget to replace the id with guildID) */
+    // client.guilds.cache.get(id).commands.set([]);
+
+    /* To be used for removing global commands
+    as it might duplicate with guild commands
+    Use only needed! (~1 hour to update)*/
+    // client.application.commands.set([]);
 });
 
 client.on('interactionCreate', async (interaction) => {

@@ -19,22 +19,49 @@ module.exports = {
         const queue = client.player.getQueue(interaction.guildId);
 
         if (!queue)
-            return await interaction.editReply(
-                'There are no songs in the queue.'
-            );
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(
+                            ':warning: — There are no songs in the queue.'
+                        ),
+                ],
+            });
 
         const trackNum = interaction.options.getNumber('tracknumber');
 
         if (trackNum > queue.tracks.length)
-            return interaction.editReply('Invalid track number!');
+            return await interaction.editReply({
+                embeds: [
+                    new MessageEmbed()
+                        .setColor('#EFAAC4')
+                        .setAuthor({
+                            name: 'Warning!',
+                            iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                        })
+                        .setTitle(':warning: — Invalid track number!'),
+                ],
+            });
+
         // Skip to track number specify by user - 1 (because of array)
         queue.skipTo(trackNum - 1);
 
         await interaction.editReply({
             embeds: [
-                new MessageEmbed().setDescription(
-                    `Skipped ahead to track number ${trackNum}.`
-                ),
+                new MessageEmbed()
+                    .setColor('#EFAAC4')
+                    .setAuthor({
+                        name: 'Success!',
+                        iconURL: 'https://i.imgur.com/ACiGc2A.png',
+                    })
+                    .setTitle(
+                        `:white_check_mark: — Skipped ahead to track number ${trackNum}.`
+                    ),
             ],
         });
     },
