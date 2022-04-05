@@ -19,6 +19,7 @@ client.commands = new Collection();
 // Assign new object properties under Client to Player (bind discord-player)
 client.player = new Player(client, {
     ytdlOptions: {
+        filter: 'audioonly',
         quality: 'highestaudio',
         highWaterMark: 1 << 25,
     },
@@ -75,7 +76,6 @@ client.on('interactionCreate', async (interaction) => {
     await command.run({ client, interaction }); */
 
     try {
-        // await command.execute(interaction);
         await interaction.deferReply();
         await command.run({ client, interaction });
     } catch (error) {

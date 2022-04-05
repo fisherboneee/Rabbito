@@ -29,6 +29,9 @@ module.exports = {
                 ],
             });
 
+        // To clear the queue first
+        queue.clear();
+
         // To destroy the queue and exit the voice channel simultaneously
         queue.destroy();
 

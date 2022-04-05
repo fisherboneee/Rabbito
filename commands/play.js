@@ -11,42 +11,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play/Queue songs to be played in your voice channel')
-        /* Add subcommand (like an argument required)
-        First subcommand: Load song from URL */
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName('song')
-                .setDescription('Load a single song from URL')
-                .addStringOption((option) =>
-                    option
-                        .setName('url')
-                        .setDescription("Song's URL")
-                        .setRequired(true)
-                )
-        )
-        // Second subcommand: Load song from playlist URL
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName('playlist')
-                .setDescription('Load a playlist of songs from URL')
-                .addStringOption((option) =>
-                    option
-                        .setName('url')
-                        .setDescription('The playlist URL')
-                        .setRequired(true)
-                )
-        )
-        // Third subcommand: Search keywords to play song
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName('search')
-                .setDescription('Search song based on provided keywords')
-                .addStringOption((option) =>
-                    option
-                        .setName('keywords')
-                        .setDescription('Search keywords')
-                        .setRequired(true)
-                )
+        .addStringOption((option) =>
+            option
+                .setName('any')
+                .setDescription('Load songs from any sources via URL')
+                .setRequired(true)
         ),
     run: async ({ client, interaction }) => {
         // Validating if user is in the voice channel
@@ -76,44 +45,16 @@ module.exports = {
 
         // Declaration of embed message
         let embed = new MessageEmbed();
-        // Getting the subcommand
-        if (interaction.options.getSubcommand() === 'song') {
-            // Grab the addStringOption name/string
-            let url = interaction.options.getString('url');
+
+        // Get any parameter from user
+        let any = interaction.options.getString('any');
+
+        // If the URL contains 'playlist'
+        if (any.includes('playlist')) {
             // Using discord-player search function (able to change the searchEngine properties)
-            const result = await client.player.search(url, {
+            const result = await client.player.search(any, {
                 requestedBy: interaction.user,
-                searchEngine: QueryType.YOUTUBE_VIDEO,
-            });
-
-            // result.tracks is actually returned to array (verify the result length)
-            if (result.tracks.length === 0)
-                return interaction.editReply('No results');
-
-            // else take the track 1 from the result
-            const song = result.tracks[0];
-            // then add the song to the queue
-            await queue.addTrack(song);
-
-            embed
-                .setColor('#EFAAC4')
-                .setAuthor({
-                    name: 'Success!',
-                    iconURL: 'https://i.imgur.com/ACiGc2A.png',
-                })
-                .setTitle(':arrow_forward: — Added to the queue')
-                // You can easily set the song title and url based on the variable you declared above
-                .setDescription(`**[${song.title}](${song.url})**`)
-                // You can also set the thumbnail based on the variable too!
-                .setThumbnail(song.thumbnail)
-                .setFooter({ text: `Duration: ${song.duration}` });
-        } else if (interaction.options.getSubcommand() === 'playlist') {
-            // Grab the addStringOption name/string
-            let url = interaction.options.getString('url');
-            // Using discord-player search function (able to change the searchEngine properties)
-            const result = await client.player.search(url, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.YOUTUBE_PLAYLIST,
+                searchEngine: QueryType.AUTO,
             });
 
             // result.tracks is actually returned to array (verify the result length)
@@ -138,12 +79,12 @@ module.exports = {
                 )
                 // You can also set the thumbnail based on the variable too!
                 .setThumbnail(playlist.thumbnail)
-                .setFooter({ text: `Duration: ${playlist.duration}` });
-        } else if (interaction.options.getSubcommand() === 'search') {
-            // Grab the addStringOption name/string
-            let url = interaction.options.getString('keywords');
+                .setFooter({
+                    text: "P/S: Only the first 100 songs will be queue if you're using Spotify playlist link, this is a known bug by discord-player itself.",
+                });
+        } else {
             // Using discord-player search function (able to change the searchEngine properties)
-            const result = await client.player.search(url, {
+            const result = await client.player.search(any, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.AUTO,
             });
@@ -152,7 +93,7 @@ module.exports = {
             if (result.tracks.length === 0)
                 return interaction.editReply('No results');
 
-            // else take the song from the result
+            // else take the track 1 from the result
             const song = result.tracks[0];
             // then add the song to the queue
             await queue.addTrack(song);
