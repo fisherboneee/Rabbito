@@ -19,7 +19,7 @@ client.commands = new Collection();
 // Assign new object properties under Client to Player (bind discord-player)
 client.player = new Player(client, {
     ytdlOptions: {
-        filter: 'audioonly',
+        filter: 'audio',
         quality: 'highestaudio',
         highWaterMark: 1 << 25,
     },
@@ -47,7 +47,7 @@ client.once('ready', () => {
 
     // Setting up bot Rich Presence!
     client.user.setPresence({
-        activities: [{ name: 'songs for s̶e̶u̶ you!', type: 'PLAYING' }],
+        activities: [{ name: 'songs for you!', type: 'PLAYING' }],
         status: 'online',
     });
 
