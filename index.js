@@ -47,7 +47,7 @@ client.once('ready', () => {
 
     // Setting up bot Rich Presence!
     client.user.setPresence({
-        activities: [{ name: 'songs for you!', type: 'PLAYING' }],
+        activities: [{ name: 'to your song!', type: 'LISTENING' }],
         status: 'online',
     });
 
