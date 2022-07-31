@@ -2,7 +2,7 @@
 
 Rabbito is a Discord music bot that let you queue/play music inside your voice channel. 
 
-It also allow you do perform various commands to match the behaviour of your favourite music player. *(such as Spotify/Apple Music)*
+It also allow you do perform various commands to match the behaviour of your favourite music player.
 
 [Invite the bot to your server](https://discord.com/api/oauth2/authorize?client_id=941422364376309771&permissions=139623484416&scope=bot%20applications.commands)
 
